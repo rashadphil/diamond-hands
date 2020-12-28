@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap");
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #17141d;
+    color: white;
+    font-family: "DM Mono", monospace;
+}
+
+a {
+    text-decoration: none;
+}
+
+.card {
+    height: 350px;
+    width: 300px;
+    min-width: 250px;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: #17141d;
+    box-shadow: -1rem 0 3rem #000;
+    display: flex;
+    flex-direction: column;
+    transition: 0.2s;
+    margin: 0;
+    scroll-snap-align: start;
+    clear: both;
+    position: relative;
+}
+
+.card:focus-within ~ .card,
+.card:hover ~ .card {
+    transform: translateX(130px);
+}
+
+.card:hover {
+    transform: translateY(-1rem);
+}
+
+.card:not(:first-child) {
+    margin-left: -130px;
+}
+
+.card-header {
+    margin-bottom: auto;
+}
+
+.card-header p {
+    font-size: 14px;
+    margin: 0 0 1rem;
+    color: #7a7a8c;
+}
+
+.card-header h1 {
+    font-size: 50px;
+    text-align: center;
+    margin: 0.25rem 0 auto;
+    color: inherit;
+    border: 0;
+    /* display: inline-block; */
+    cursor: pointer;
+}
+
+.card-header h1:hover {
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    text-shadow: none;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.card-header h2 {
+    font-size: 28px;
+    text-align: center;
+    margin: 0.25rem 0 auto;
+    color: inherit;
+    border: 0;
+    /* display: inline-block; */
+    cursor: pointer;
+}
+
+.prices-div {
+    margin-top: 20px;
+}
+
+.prices-div h3 {
+    font-size: 20px;
+    text-align: left;
+    font-weight: 500;
+    margin: 0.25rem 0 auto;
+    color: inherit;
+    border: 0;
+    /* display: inline-block; */
+    cursor: pointer;
+}
+
+#exp {
+    font-size: 25px;
+    text-align: left;
+    margin-top: 50px;
+    color: inherit;
+    border: 0;
+}
