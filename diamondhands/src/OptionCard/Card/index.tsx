@@ -6,11 +6,6 @@ const COLORS = {
     red: "rgb(255, 81, 3)",
 };
 
-function getColor(percentReturn: number) {
-    if (percentReturn > 0) return COLORS.green;
-    else return COLORS.red;
-}
-
 type Props = {
     ticker: string;
     strike: string;
