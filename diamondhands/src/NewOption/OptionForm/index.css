@@ -23,7 +23,6 @@
 }
 
 @media screen and (min-width: 500px) {
-    /* Center the Modal! */
     .modal-area {
         left: 50%;
         top: 50%;
@@ -58,6 +57,7 @@
 .modal-body {
     padding-top: 0.25em;
 }
+
 ._hide-visual {
     border: 0 !important;
     clip: rect(0 0 0 0) !important;
@@ -73,4 +73,8 @@
 .scroll-lock {
     overflow: hidden;
     margin-right: 17px;
+}
+
+.form label {
+    color: black;
 }

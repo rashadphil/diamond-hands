@@ -16,7 +16,12 @@ class OptionForm extends React.Component {
         this.setState({ isShown: false });
         this.toggleScrollLock();
     };
-
+    onSubmit = (event) => {
+        event.preventDefault(event);
+        console.log(event.target.strike.value);
+        console.log(event.target.ticker.value);
+        console.log(event.target.expiration.value);
+    };
     render() {
         return (
             <React.Fragment>
@@ -25,7 +30,10 @@ class OptionForm extends React.Component {
                     closeModal={this.closeModal}
                 ></FormButton>
                 {this.state.isShown ? (
-                    <Modal closeModal={this.closeModal}></Modal>
+                    <Modal
+                        closeModal={this.closeModal}
+                        onSubmit={this.onSubmit}
+                    ></Modal>
                 ) : null}
             </React.Fragment>
         );

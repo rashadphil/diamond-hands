@@ -4,7 +4,7 @@ import "../index.css";
 import Form from "../Form";
 import FocusTrap from "focus-trap-react";
 
-export const Modal = ({ closeModal }) => {
+export const Modal = ({ closeModal, onSubmit }) => {
     return ReactDOM.createPortal(
         <FocusTrap>
             <aside role="dialog" aria-modal="true" className="modal-cover">
@@ -23,7 +23,7 @@ export const Modal = ({ closeModal }) => {
                         </svg>
                     </button>
                     <div className="modal-body">
-                        <Form />
+                        <Form onSubmit={onSubmit} />
                     </div>
                 </div>
             </aside>

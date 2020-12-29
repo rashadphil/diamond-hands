@@ -1,21 +1,21 @@
 import * as React from "react";
 import "../index.css";
-const Form = (): JSX.Element => (
-    <form>
+const Form = ({ onSubmit }): JSX.Element => (
+    <form onSubmit={onSubmit}>
         <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input className="form-control" id="name" />
+            <label htmlFor="ticker">Ticker</label>
+            <input className="form-control" id="ticker" />
         </div>
 
         <div className="form-group">
-            <label htmlFor="email">Email address</label>
-            <input
-                type="email"
-                className="form-control"
-                id="email"
-                placeholder="name@example.com"
-            />
+            <label htmlFor="strike">Strike</label>
+            <input className="form-control" id="strike" />
         </div>
+        <div className="form-group">
+            <label htmlFor="exp">Expiration</label>
+            <input className="form-control" id="expiration" />
+        </div>
+
         <div className="form-group">
             <button className="form-control btn btn-primary" type="submit">
                 Submit
