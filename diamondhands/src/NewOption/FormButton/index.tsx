@@ -3,7 +3,7 @@ import "./index.css";
 
 let plusImg = require("../../images/plusSign.png");
 
-const FormButton = ({ showModal }): JSX.Element => (
+const FormButton = ({ showModal, closeModal }): JSX.Element => (
     <div className="buttonDiv">
         <img onClick={showModal} src={plusImg.default} />
     </div>
