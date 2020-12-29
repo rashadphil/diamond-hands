@@ -25,6 +25,36 @@ const CardWheel = (): JSX.Element => (
             exp="1/15/21"
             type="call"
         ></Card>
+        <Card
+            ticker="AMZN"
+            strike="$3,495/$3,500"
+            purchasePrice={0.81}
+            currentPrice={0.52}
+            todayReturn={246.67}
+            totalReturn={-35.8}
+            exp="1/15/21"
+            type="call"
+        ></Card>
+        <Card
+            ticker="BABA"
+            strike="$290/$295"
+            purchasePrice={0.66}
+            currentPrice={0.1}
+            todayReturn={-50.0}
+            totalReturn={-84.85}
+            exp="1/29/21"
+            type="call"
+        ></Card>
+        <Card
+            ticker="BBY"
+            strike="$145"
+            purchasePrice={0.25}
+            currentPrice={0.21}
+            todayReturn={-16.0}
+            totalReturn={-16.0}
+            exp="2/19/21"
+            type="call"
+        ></Card>
     </section>
 );
 

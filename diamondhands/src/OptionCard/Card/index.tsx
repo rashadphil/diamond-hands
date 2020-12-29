@@ -1,6 +1,9 @@
 import * as React from "react";
 import "./index.css";
 
+let callImg = require("../../images/callImg.png");
+let putImg = require("../../images/putImg.png");
+
 const COLORS = {
     green: "rgb(5, 200, 6)",
     red: "rgb(255, 81, 3)",
@@ -30,7 +33,13 @@ const OptionCard = ({
     <article className="card">
         <header className="card-header">
             <h1>{ticker}</h1>
-            <h2>{strike}</h2>
+            <h2>
+                {strike}{" "}
+                <img
+                    src={type == "call" ? callImg.default : putImg.default}
+                ></img>
+            </h2>
+
             <div className="prices-div">
                 <h3>${purchasePrice} @ PURCHASE</h3>
                 <h3>${currentPrice} @ CURRENT</h3>
