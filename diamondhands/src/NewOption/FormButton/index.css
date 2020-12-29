@@ -1,0 +1,14 @@
+.buttonDiv {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.buttonDiv img {
+    width: 70px;
+}
+
+.buttonDiv img:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}

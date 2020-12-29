@@ -103,7 +103,7 @@ a {
 #exp {
     font-size: 25px;
     text-align: left;
-    margin-top: 50px;
+    vertical-align: bottom;
     color: inherit;
     border: 0;
 }
