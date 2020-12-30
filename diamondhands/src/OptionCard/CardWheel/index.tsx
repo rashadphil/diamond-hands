@@ -3,59 +3,81 @@ import "./index.css";
 
 import Card from "../Card";
 
-const CardWheel = (): JSX.Element => (
-    <section className="card-list">
-        <Card
-            ticker="MSFT"
-            strike="$222.5/$225"
-            purchasePrice={0.71}
-            currentPrice={1.72}
-            todayReturn={68.67}
-            totalReturn={140.85}
-            exp="12/31/20"
-            type="call"
-        ></Card>
-        <Card
-            ticker="NIO"
-            strike="$45/$46"
-            purchasePrice={0.38}
-            currentPrice={0.35}
-            todayReturn={-7.89}
-            totalReturn={-7.89}
-            exp="1/15/21"
-            type="call"
-        ></Card>
-        <Card
-            ticker="AMZN"
-            strike="$3,495/$3,500"
-            purchasePrice={0.81}
-            currentPrice={0.52}
-            todayReturn={246.67}
-            totalReturn={-35.8}
-            exp="1/15/21"
-            type="call"
-        ></Card>
-        <Card
-            ticker="BABA"
-            strike="$290/$295"
-            purchasePrice={0.66}
-            currentPrice={0.1}
-            todayReturn={-50.0}
-            totalReturn={-84.85}
-            exp="1/29/21"
-            type="call"
-        ></Card>
-        <Card
-            ticker="BBY"
-            strike="$145"
-            purchasePrice={0.25}
-            currentPrice={0.21}
-            todayReturn={-16.0}
-            totalReturn={-16.0}
-            exp="2/19/21"
-            type="call"
-        ></Card>
-    </section>
-);
+class CardWheel extends React.Component<{}, { optionList: Array<any> }> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            optionList: [
+                {
+                    ticker: "MSFT",
+                    strike: "$222.5/$225",
+                    purchasePrice: 0.71,
+                    currentPrice: 1.72,
+                    todayReturn: 68.67,
+                    totalReturn: 140.85,
+                    exp: "12/31/20",
+                    type: "call",
+                },
+                {
+                    ticker: "NIO",
+                    strike: "$45/$46",
+                    purchasePrice: 0.71,
+                    currentPrice: 1.72,
+                    todayReturn: 68.67,
+                    totalReturn: 140.85,
+                    exp: "12/31/20",
+                    type: "put",
+                },
+                {
+                    ticker: "AAPL",
+                    strike: "$222.5/$225",
+                    purchasePrice: 0.71,
+                    currentPrice: 1.72,
+                    todayReturn: -68.67,
+                    totalReturn: -23.38,
+                    exp: "12/31/20",
+                    type: "call",
+                },
+                {
+                    ticker: "MSFT",
+                    strike: "$222.5/$225",
+                    purchasePrice: 0.71,
+                    currentPrice: 1.72,
+                    todayReturn: 68.67,
+                    totalReturn: 140.85,
+                    exp: "12/31/20",
+                    type: "call",
+                },
+            ],
+        };
+    }
+    onAddCard = (option) => {
+        this.setState((state) => {
+            const optionList = state.optionList.concat(option);
+            return {
+                optionList,
+            };
+        });
+    };
+
+    render() {
+        return (
+            <section className="card-list">
+                {this.state.optionList.map((card) => (
+                    <Card
+                        ticker={card.ticker}
+                        strike={card.strike}
+                        purchasePrice={card.purchasePrice}
+                        currentPrice={card.currentPrice}
+                        todayReturn={card.todayReturn}
+                        totalReturn={card.totalReturn}
+                        exp={card.exp}
+                        type={card.type}
+                    ></Card>
+                ))}
+            </section>
+        );
+    }
+}
 
 export default CardWheel;

@@ -2,6 +2,7 @@ import * as React from "react";
 import "./index.css";
 import FormButton from "../FormButton";
 import Modal from "./Modal";
+import CardWheel from "../../OptionCard/CardWheel";
 
 class OptionForm extends React.Component {
     state = { isShown: false };
@@ -18,6 +19,7 @@ class OptionForm extends React.Component {
     };
     onSubmit = (event) => {
         event.preventDefault(event);
+        // CardWheel.setState();
         console.log(event.target.strike.value);
         console.log(event.target.ticker.value);
         console.log(event.target.expiration.value);
