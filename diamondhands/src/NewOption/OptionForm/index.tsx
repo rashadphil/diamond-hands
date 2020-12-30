@@ -5,7 +5,7 @@ import Modal from "./Modal";
 import CardWheel from "../../OptionCard/CardWheel";
 
 class OptionForm extends React.Component {
-    state = { isShown: false };
+    state = { isShown: false, newCard: {} };
     showModal = () => {
         this.setState({ isShown: true });
         this.toggleScrollLock();
@@ -19,10 +19,19 @@ class OptionForm extends React.Component {
     };
     onSubmit = (event) => {
         event.preventDefault(event);
-        // CardWheel.setState();
-        console.log(event.target.strike.value);
-        console.log(event.target.ticker.value);
-        console.log(event.target.expiration.value);
+        this.setState({
+            isShown: false,
+            newCard: {
+                strike: event.target.strike.value,
+                ticker: event.target.ticker.value,
+                expiration: event.target.expiration.value,
+            },
+        });
+        // console.log(event.target.strike.value);
+        // console.log(event.target.ticker.value);
+        // console.log(event.target.expiration.value);
+        // console.log(this.state);
+        console.log(event.target.value);
     };
     render() {
         return (
