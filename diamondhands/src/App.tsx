@@ -4,26 +4,15 @@ import React, { useState } from "react";
 import CardWheel from "./OptionCard/CardWheel";
 import OptionForm from "./NewOption/OptionForm";
 
-import firebase from "firebase/app";
+import firebase from "./firebase";
 import "firebase/firestore";
 import "firebase/auth";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-firebase.initializeApp({
-    apiKey: "AIzaSyA9YAE6jwb1GEA7clfnYLqrkBB1L-rSkpg",
-    authDomain: "diamond-hands-ca6e7.firebaseapp.com",
-    projectId: "diamond-hands-ca6e7",
-    storageBucket: "diamond-hands-ca6e7.appspot.com",
-    messagingSenderId: "78768005190",
-    appId: "1:78768005190:web:8a06a0234d11d467732a47",
-    measurementId: "G-WGBJZKRSML",
-});
 const auth = firebase.auth();
 const firestore = firebase.firestore();
-
-// console.log(firebase);
 
 function App() {
     const [cards, updateCards] = useState([
