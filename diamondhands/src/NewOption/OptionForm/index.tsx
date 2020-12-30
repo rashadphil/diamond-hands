@@ -3,7 +3,7 @@ import "./index.css";
 import FormButton from "../FormButton";
 import Modal from "./Modal";
 
-function OptionForm() {
+function OptionForm({ onSubmit }) {
     const [isShown, formVisible] = useState(false);
     function showModal() {
         formVisible(true);
@@ -16,18 +16,7 @@ function OptionForm() {
         formVisible(false);
         toggleScrollLock();
     }
-    function onSubmit(event) {
-        event.preventDefault(event);
-        formVisible(false);
-        // this.setState({
-        //     isShown: false,
-        //     newCard: {
-        //         strike: event.target.strike.value,
-        //         ticker: event.target.ticker.value,
-        //         expiration: event.target.expiration.value,
-        //     },
-        // });
-    }
+
     return (
         <React.Fragment>
             <FormButton

@@ -48,29 +48,29 @@ function App() {
         },
     ]);
     function addCard(option) {
-        updateCards(cards.concat(option));
+        updateCards(cards.concat(option)); //adds new option to cardwheel
         console.log(cards);
+    }
+    function onSubmit(event) {
+        event.preventDefault(event); //prevents page from refreshing on form submit
+        let strike = event.target.strike.value;
+        let ticker = event.target.ticker.value;
+        let expiration = event.target.expiration.value;
+        addCard({
+            ticker: ticker,
+            strike: strike,
+            purchasePrice: 0.71,
+            currentPrice: 1.72,
+            todayReturn: 68.67,
+            totalReturn: 140.85,
+            exp: expiration,
+            type: "call",
+        });
     }
     return (
         <>
             <CardWheel cardList={cards}></CardWheel>
-            <OptionForm></OptionForm>
-            <h1
-                onClick={() =>
-                    addCard({
-                        ticker: "TEST",
-                        strike: "$222.5/$225",
-                        purchasePrice: 0.71,
-                        currentPrice: 1.72,
-                        todayReturn: 68.67,
-                        totalReturn: 140.85,
-                        exp: "12/31/20",
-                        type: "call",
-                    })
-                }
-            >
-                Test
-            </h1>
+            <OptionForm onSubmit={(event) => onSubmit(event)}></OptionForm>
         </>
     );
 }
