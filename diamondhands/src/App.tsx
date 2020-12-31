@@ -33,11 +33,15 @@ function App() {
                 userInfo.push(doc.data());
             });
 
+            //if user is in database: gets users cards and renders them
+            //if not: does not render any cards
             let userInDatabase = userInfo[0];
             if (userInDatabase) {
                 let userCards = userInfo[0].optionCards;
                 updateCards(userCards);
             } else {
+                //add the user to the database
+                ref.doc(userID).set({ userID: userID, optionCards: [] });
                 updateCards([]);
             }
         });
@@ -53,13 +57,13 @@ function App() {
         updateCards(cards.concat(option)); //adds new option to cardwheel
         const usersRef = ref.doc(userID);
         //check if user's ID is already in database
-        usersRef.get().then((docSnapshot) => {
-            if (docSnapshot.exists) {
-                usersRef.set([option]);
-            } else {
-                //if the user's ID is not in database
-            }
-        });
+        // usersRef.get().then((docSnapshot) => {
+        //     if (docSnapshot.exists) {
+        //         usersRef.set([option]);
+        //     } else {
+        //         //if the user's ID is not in database
+        //     }
+        // });
     }
     function onSubmit(event) {
         event.preventDefault(event); //prevents page from refreshing on form submit
