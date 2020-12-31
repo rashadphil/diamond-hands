@@ -20,10 +20,12 @@ function App() {
 
     let userID;
     let ref;
+    let userRef;
 
     if (user) {
         userID = user.uid; //gets ID if user is logged in
         ref = db.collection("users");
+        userRef = ref.doc(userID);
     }
 
     function getCards() {
@@ -41,7 +43,7 @@ function App() {
                 updateCards(userCards);
             } else {
                 //add the user to the database
-                ref.doc(userID).set({ userID: userID, optionCards: [] });
+                userRef.set({ userID: userID, optionCards: [] });
                 updateCards([]);
             }
         });
@@ -55,15 +57,9 @@ function App() {
 
     function addCard(option) {
         updateCards(cards.concat(option)); //adds new option to cardwheel
-        const usersRef = ref.doc(userID);
-        //check if user's ID is already in database
-        // usersRef.get().then((docSnapshot) => {
-        //     if (docSnapshot.exists) {
-        //         usersRef.set([option]);
-        //     } else {
-        //         //if the user's ID is not in database
-        //     }
-        // });
+        userRef.update({
+            optionCards: firebase.firestore.FieldValue.arrayUnion(option), //updates database with new card
+        });
     }
     function onSubmit(event) {
         event.preventDefault(event); //prevents page from refreshing on form submit
