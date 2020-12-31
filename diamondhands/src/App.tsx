@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import CardWheel from "./OptionCard/CardWheel";
 import OptionForm from "./NewOption/OptionForm";
@@ -15,49 +15,35 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 function App() {
-    const [cards, updateCards] = useState([
-        {
-            ticker: "MSFT",
-            strike: "$222.5/$225",
-            purchasePrice: 0.71,
-            currentPrice: 1.72,
-            todayReturn: 68.67,
-            totalReturn: 140.85,
-            exp: "12/31/20",
-            type: "call",
-        },
-        {
-            ticker: "NIO",
-            strike: "$45/$46",
-            purchasePrice: 0.71,
-            currentPrice: 1.72,
-            todayReturn: 68.67,
-            totalReturn: 140.85,
-            exp: "12/31/20",
-            type: "put",
-        },
-        {
-            ticker: "AAPL",
-            strike: "$222.5/$225",
-            purchasePrice: 0.71,
-            currentPrice: 1.72,
-            todayReturn: -68.67,
-            totalReturn: -23.38,
-            exp: "12/31/20",
-            type: "call",
-        },
-        {
-            ticker: "MSFT",
-            strike: "$222.5/$225",
-            purchasePrice: 0.71,
-            currentPrice: 1.72,
-            todayReturn: 68.67,
-            totalReturn: 140.85,
-            exp: "12/31/20",
-            type: "call",
-        },
-    ]);
-    const [user] = useAuthState(auth);
+    const [cards, updateCards] = useState([]);
+    const [user, loading] = useAuthState(auth);
+
+    let userID;
+    let ref;
+
+    if (user) {
+        console.log("LOGGED In");
+        userID = user.uid; //gets ID if user is logged in
+        ref = firebase
+            .firestore()
+            .collection("users")
+            .where("userID", "==", userID); //only get info for the logged in user
+    }
+
+    function getCards() {
+        ref.onSnapshot((querySnapshot) => {
+            const userInfo: Array<any> = [];
+            querySnapshot.forEach((doc) => {
+                userInfo.push(doc.data());
+            });
+            let userCards = userInfo[0].optionCards;
+            updateCards(userCards);
+            console.log(userCards);
+        });
+    }
+    useEffect(() => {
+        if (user) getCards();
+    }, [user]); //run useEffect is the user log in status changes changes
 
     function addCard(option) {
         updateCards(cards.concat(option)); //adds new option to cardwheel
@@ -79,7 +65,6 @@ function App() {
             type: "call",
         });
     }
-    console.log(user);
 
     return (
         <>
