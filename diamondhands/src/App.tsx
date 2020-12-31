@@ -12,7 +12,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const auth = firebase.auth();
-const firestore = firebase.firestore();
+const db = firebase.firestore();
 
 function App() {
     const [cards, updateCards] = useState([]);
@@ -22,32 +22,44 @@ function App() {
     let ref;
 
     if (user) {
-        console.log("LOGGED In");
         userID = user.uid; //gets ID if user is logged in
-        ref = firebase
-            .firestore()
-            .collection("users")
-            .where("userID", "==", userID); //only get info for the logged in user
+        ref = db.collection("users");
     }
 
     function getCards() {
-        ref.onSnapshot((querySnapshot) => {
+        ref.where("userID", "==", userID).onSnapshot((querySnapshot) => {
             const userInfo: Array<any> = [];
             querySnapshot.forEach((doc) => {
                 userInfo.push(doc.data());
             });
-            let userCards = userInfo[0].optionCards;
-            updateCards(userCards);
-            console.log(userCards);
+
+            let userInDatabase = userInfo[0];
+            if (userInDatabase) {
+                let userCards = userInfo[0].optionCards;
+                updateCards(userCards);
+            } else {
+                updateCards([]);
+            }
         });
     }
+
     useEffect(() => {
-        if (user) getCards();
+        if (user) {
+            getCards();
+        }
     }, [user]); //run useEffect is the user log in status changes changes
 
     function addCard(option) {
         updateCards(cards.concat(option)); //adds new option to cardwheel
-        console.log(cards);
+        const usersRef = ref.doc(userID);
+        //check if user's ID is already in database
+        usersRef.get().then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                usersRef.set([option]);
+            } else {
+                //if the user's ID is not in database
+            }
+        });
     }
     function onSubmit(event) {
         event.preventDefault(event); //prevents page from refreshing on form submit
