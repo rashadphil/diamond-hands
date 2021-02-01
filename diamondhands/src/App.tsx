@@ -78,13 +78,14 @@ function App() {
         });
     }
 
+
     return (
         <>
             {user ? (
                 [<SignOut></SignOut>, <CardWheel cardList={cards}></CardWheel>]
             ) : (
-                <SignIn></SignIn>
-            )}
+                    <SignIn></SignIn>
+                )}
             <OptionForm onSubmit={(event) => onSubmit(event)}></OptionForm>
         </>
     );

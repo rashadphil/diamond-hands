@@ -1,7 +1,10 @@
 import * as React from "react";
 import "../index.css";
+import AutoComplete from "../Autocomplete";
+
 const Form = ({ onSubmit }): JSX.Element => (
     <form onSubmit={onSubmit}>
+        <AutoComplete stocks={["NIO", "Apple", "Tesla", "Animal"]}></AutoComplete>
         <div className="form-group">
             <label htmlFor="ticker">Ticker</label>
             <input className="form-control" id="ticker" />
