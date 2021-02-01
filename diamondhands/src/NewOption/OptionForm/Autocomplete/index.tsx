@@ -2,7 +2,8 @@ import React, { useState, Fragment } from "react";
 import PropTypes from 'prop-types';
 import "./index.css"
 
-function AutoComplete({ stocks }) {
+function AutoComplete({ stocks, tickers, currentVal }) {
+
     const [suggestions, updateSuggestions] = useState({
         activeSuggestion: 0,
         filteredSuggestions: [],
@@ -10,15 +11,16 @@ function AutoComplete({ stocks }) {
         userInput: ""
     });
     function handleChange(event) {
-        const suggestions = stocks;
+        const suggestions = tickers;
         const userInput = event.currentTarget.value;
-        const filteredSuggestions = suggestions.filter(suggestion => suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1);
+        const filteredSuggestions = suggestions.filter(suggestion => suggestion.toLowerCase().startsWith(userInput.toLowerCase()));
         updateSuggestions({
             activeSuggestion: 0,
             filteredSuggestions: filteredSuggestions,
             showSuggestions: true,
             userInput: userInput
         })
+        currentVal = userInput;
     }
     function onClick(event) {
         updateSuggestions({
@@ -110,7 +112,7 @@ function AutoComplete({ stocks }) {
 
     return (
         <Fragment>
-            <input type="text" onChange={handleChange} value={suggestions.userInput} onKeyDown={onKeyDown} />
+            <input type="text" id="ticker" onChange={handleChange} value={suggestions.userInput} onKeyDown={onKeyDown} />
             <SuggestionList></SuggestionList>
         </Fragment>
     );
