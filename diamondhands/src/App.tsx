@@ -11,8 +11,13 @@ import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { gql } from '@apollo/client';
+
 const auth = firebase.auth();
 const db = firebase.firestore();
+
+const cors_api_url = 'https://limitless-escarpment-41761.herokuapp.com'
 
 function App() {
     const [cards, updateCards] = useState([]);
@@ -63,19 +68,32 @@ function App() {
     }
     function onSubmit(event) {
         event.preventDefault(event); //prevents page from refreshing on form submit
-        let strike = event.target.strike.value;
+        // let strike = event.target.strike.value;
         let ticker = event.target.ticker.value;
-        let expiration = event.target.expiration.value;
-        addCard({
-            ticker: ticker,
-            strike: strike,
-            purchasePrice: 0.71,
-            currentPrice: 1.72,
-            todayReturn: 68.67,
-            totalReturn: 140.85,
-            exp: expiration,
-            type: "call",
-        });
+        fetch(`${cors_api_url}/https://query2.finance.yahoo.com/v7/finance/options/${ticker}`, {
+            method: "GET",
+            headers: new Headers({
+                'Origin': "http://localhost:3000",
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+
+            }),
+            mode: "cors",
+        })
+            .then(res => res.json())
+            .then(response => console.log(response));
+
+        // let expiration = event.target.expiration.value;
+        // addCard({
+        //     ticker: ticker,
+        //     strike: strike,
+        //     purchasePrice: 0.71,
+        //     currentPrice: 1.72,
+        //     todayReturn: 68.67,
+        //     totalReturn: 140.85,
+        //     exp: expiration,
+        //     type: "call",
+        // });
     }
 
 

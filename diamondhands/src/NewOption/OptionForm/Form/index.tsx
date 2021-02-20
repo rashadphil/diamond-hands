@@ -12,7 +12,7 @@ for (let ticker in stocks_json) {
 
 
 const Form = ({ onSubmit }): JSX.Element => (
-    <form onSubmit={onSubmit} autoComplete="off" >
+    <form className="form" onSubmit={onSubmit} autoComplete="off" >
 
         <div className="form-group">
             <label htmlFor="ticker">Ticker</label>

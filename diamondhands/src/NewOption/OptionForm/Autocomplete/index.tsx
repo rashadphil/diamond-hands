@@ -112,7 +112,7 @@ function AutoComplete({ stocks, tickers, currentVal }) {
 
     return (
         <Fragment>
-            <input type="text" id="ticker" onChange={handleChange} value={suggestions.userInput} onKeyDown={onKeyDown} />
+            <input className="form-control" type="text" id="ticker" onChange={handleChange} value={suggestions.userInput} onKeyDown={onKeyDown} />
             <SuggestionList></SuggestionList>
         </Fragment>
     );

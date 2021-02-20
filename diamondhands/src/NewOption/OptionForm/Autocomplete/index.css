@@ -35,3 +35,8 @@ input {
 .suggestions li:not(:last-of-type) {
     border-bottom: 1px solid #999;
 }
+
+.form-control {
+    background-color: #262424;
+    border: 0px;
+}
