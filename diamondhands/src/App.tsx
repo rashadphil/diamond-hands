@@ -66,60 +66,41 @@ function App() {
             optionCards: firebase.firestore.FieldValue.arrayUnion(option), //updates database with new card
         });
     }
-    function jsonToCard(strike, ticker, expiration, type, response) {
-        let jayson = response.optionChain.result[0].options[0];
-        if (type == "call")
-            jayson = jayson.calls;
-        if (type == "puts")
-            jayson = jayson.puts;
-        console.log(jayson);
+    function jsonToCard(response) {
         // new Date(1504095567183).toLocaleDateString("en-US")
         return {};
-    }
-    function getSpecificDateJson(strike, ticker, expiration, type, specificDates) { //looks at each possible date and then makes card
-        let userDateUnix;
-
-        let userDateAsArray = expiration.split("/"); //[DD, MM, YY]
-        if (userDateAsArray.length == 3)
-            userDateAsArray[2] = "20" + userDateAsArray[2];
-        else
-            userDateAsArray[2] = (new Date().getFullYear()).toString();
-
-        //for each unixDate in ticker's options Chain
-        for (const unixDate of specificDates) {
-            let tempDate = new Date((unixDate + 86400) * 1000).toLocaleDateString("en-US"); //adding 86400 because yahoo finance dates off by one day
-            let tempDateAsArray = tempDate.split("/"); //[DD, MM, YY]
-            console.log(userDateAsArray, tempDateAsArray);
-            if (JSON.stringify(userDateAsArray) === JSON.stringify(tempDateAsArray)) {
-                userDateUnix = unixDate;
-                break;
-            }
-        }
-        fetch(`${cors_api_url}/https://query2.finance.yahoo.com/v7/finance/options/${ticker}?date=${userDateUnix}`, {
-            method: "GET",
-            headers: new Headers({
-                'Origin': "http://localhost:3000",
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-
-            }),
-            mode: "cors",
-        })
-            .then(res => res.json())
-            .then(response =>
-                addCard(
-                    jsonToCard(strike, ticker, expiration, type, response)
-                ),
-            );
     }
     function onSubmit(event) {
         event.preventDefault(event); //prevents page from refreshing on form submit
         let strike = event.target.strike.value;
         let ticker = event.target.ticker.value;
         let expiration = event.target.expiration.value;
-        let type = "call";
+        let type = "C";
+        let underlyingSymbol;
 
-        return fetch(`${cors_api_url}/https://query2.finance.yahoo.com/v7/finance/options/${ticker}`, {
+        let m, y, d;
+        let expirationAsArray = expiration.split("/");
+        console.log(expirationAsArray);
+        m = expirationAsArray[0];
+        d = expirationAsArray[1];
+        if (expirationAsArray.length == 3)
+            y = expirationAsArray[2];
+        else
+            y = String(new Date().getFullYear());
+        //make sure year is only 2 digits
+        if (y.length == 4)
+            y = y.slice(-2);
+        //make sure date has 2 digits
+        if (d.length == 1)
+            d = "0" + d;
+        //make sure month has 2 digits
+        if (m.length == 1)
+            m = "0" + m;
+
+        let apiStrike = (100000.000 + parseFloat(strike)).toFixed(3).toString().replace(".", "").substring(1); //get yahoo finance symbol strike code
+        underlyingSymbol = `${ticker}${y}${m}${d}${type}${apiStrike}`
+
+        return fetch(`${cors_api_url}/https://query2.finance.yahoo.com/v7/finance/options/${underlyingSymbol}`, {
             method: "GET",
             headers: new Headers({
                 'Origin': "http://localhost:3000",
@@ -130,8 +111,7 @@ function App() {
             mode: "cors",
         })
             .then(res => res.json())
-            .then(response => response.optionChain.result[0].expirationDates)
-            .then(possibleDates => getSpecificDateJson(strike, ticker, expiration, type, possibleDates))
+            .then(response => jsonToCard(response))
     }
 
 
