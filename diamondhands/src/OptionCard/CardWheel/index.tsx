@@ -16,6 +16,7 @@ function CardWheel({ cardList }) {
                     totalReturn={card.totalReturn}
                     exp={card.exp}
                     type={card.type}
+                    underlyingSybmol={card.underlyingSybmol}
                 ></Card>
             ))}
         </section>

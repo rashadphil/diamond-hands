@@ -71,6 +71,8 @@ function App() {
         m = expArray[1];
         d = expArray[2].slice(0, 2);
         y = expArray[0].slice(2, 4);
+        //ticker e.x. (PLTR)
+        //underlyingSymbol e.x. (PLTR210226C00015000)
         return {
             ticker: jayson.underlyingSymbol,
             strike: jayson.strike,
@@ -80,6 +82,7 @@ function App() {
             totalReturn: jayson.regularMarketChangePercent,
             exp: `${m}/${d}/${y}`,
             type: type,
+            underlyingSymbol: jayson.symbol,
         };
     }
     function onSubmit(event) {
