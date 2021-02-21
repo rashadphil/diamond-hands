@@ -17,7 +17,7 @@ const db = firebase.firestore();
 const cors_api_url = 'https://limitless-escarpment-41761.herokuapp.com'
 
 function App() {
-    const [cards, updateCards] = useState([]);
+    const [cards, updateCards] = useState([] as any);
     const [user, loading] = useAuthState(auth);
 
     let userID;
@@ -28,6 +28,39 @@ function App() {
         userID = user.uid; //gets ID if user is logged in
         ref = db.collection("users");
         userRef = ref.doc(userID);
+    }
+
+    //looks at all of user's cards and updates them
+    async function newCardsInfo(userCards) {
+        let updatedCardList = (userCards.map(async card => {
+            let underlyingSymbol = card.underlyingSymbol;
+            let purchasePrice = card.purchasePrice; //keep purchase price the same
+
+            let updatedCard = await fetch(`${cors_api_url}/https://query2.finance.yahoo.com/v7/finance/options/${underlyingSymbol}`, {
+                method: "GET",
+                headers: new Headers({
+                    'Origin': "http://localhost:3000",
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+
+                }),
+                mode: "cors",
+            })
+                .then(res => res.json())
+                .then(response => {
+                    card = jsonToCard(response)
+                    card.purchasePrice = purchasePrice;
+                    return card;
+                })
+            return updatedCard;
+        }
+        ));
+        await Promise.all(updatedCardList).then(list => {
+            updateCards(list);
+            userRef.update({
+                optionCards: list,
+            });
+        })
     }
 
     function getCards() {
@@ -42,7 +75,7 @@ function App() {
             let userInDatabase = userInfo[0];
             if (userInDatabase) {
                 let userCards = userInfo[0].optionCards;
-                updateCards(userCards);
+                newCardsInfo(userCards); //fetches new info for each card and updates them
             } else {
                 //add the user to the database
                 userRef.set({ userID: userID, optionCards: [] });
@@ -58,24 +91,31 @@ function App() {
     }, [user]); //run useEffect is the user log in status changes changes
 
     function addCard(option) {
-        updateCards(cards.concat(option)); //adds new option to cardwheel
+        updateCards([...cards, option]); //adds new option to cardwheel
         userRef.update({
             optionCards: firebase.firestore.FieldValue.arrayUnion(option), //updates database with new card
         });
     }
     function jsonToCard(response) {
         let jayson = response.optionChain.result[0].quote;
-        let type = jayson.shortName.split(" ")[4]; //call or put
+        let type = jayson.symbol
+        type = type.charAt(type.length - 9);//C or P 
+        type = (type == "C") ? "call" : "put";
         let expArray = jayson.expireIsoDate.split("-");
         let m, d, y;
         m = expArray[1];
         d = expArray[2].slice(0, 2);
         y = expArray[0].slice(2, 4);
+        let strike = jayson.strike;
+        if (strike === undefined) {//some of API's options dont list strike price
+            strike = jayson.symbol.slice(-8); // e.x 00262500
+            strike = parseFloat(strike.slice(0, 5) + "." + strike.slice(5));//add decimal and remove extra zeros
+        }
         //ticker e.x. (PLTR)
         //underlyingSymbol e.x. (PLTR210226C00015000)
         return {
             ticker: jayson.underlyingSymbol,
-            strike: jayson.strike,
+            strike: strike,
             purchasePrice: jayson.regularMarketOpen,
             currentPrice: jayson.regularMarketPrice,
             todayReturn: jayson.regularMarketChangePercent,
