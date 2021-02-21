@@ -11,9 +11,6 @@ import "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { gql } from '@apollo/client';
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 
@@ -69,7 +66,6 @@ function App() {
     function jsonToCard(response) {
         let jayson = response.optionChain.result[0].quote;
         let type = jayson.shortName.split(" ")[4]; //call or put
-        console.log(type);
         let expArray = jayson.expireIsoDate.split("-");
         let m, d, y;
         m = expArray[1];
@@ -96,7 +92,6 @@ function App() {
 
         let m, y, d;
         let expirationAsArray = expiration.split("/");
-        console.log(expirationAsArray);
         m = expirationAsArray[0];
         d = expirationAsArray[1];
         if (expirationAsArray.length == 3)
