@@ -67,8 +67,24 @@ function App() {
         });
     }
     function jsonToCard(response) {
-        // new Date(1504095567183).toLocaleDateString("en-US")
-        return {};
+        let jayson = response.optionChain.result[0].quote;
+        let type = jayson.shortName.split(" ")[4]; //call or put
+        console.log(type);
+        let expArray = jayson.expireIsoDate.split("-");
+        let m, d, y;
+        m = expArray[1];
+        d = expArray[2].slice(0, 2);
+        y = expArray[0].slice(2, 4);
+        return {
+            ticker: jayson.underlyingSymbol,
+            strike: jayson.strike,
+            purchasePrice: jayson.regularMarketOpen,
+            currentPrice: jayson.regularMarketPrice,
+            todayReturn: jayson.regularMarketChangePercent,
+            totalReturn: jayson.regularMarketChangePercent,
+            exp: `${m}/${d}/${y}`,
+            type: type,
+        };
     }
     function onSubmit(event) {
         event.preventDefault(event); //prevents page from refreshing on form submit
@@ -111,7 +127,7 @@ function App() {
             mode: "cors",
         })
             .then(res => res.json())
-            .then(response => jsonToCard(response))
+            .then(response => addCard(jsonToCard(response)))
     }
 
 
