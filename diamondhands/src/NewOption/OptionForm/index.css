@@ -83,3 +83,12 @@
     background-color: #262424;
     color: white;
 }
+
+.form {
+    float: left;
+}
+
+.buttonContainer {
+    float: right;
+    width: 50%;
+}

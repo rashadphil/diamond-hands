@@ -43,8 +43,8 @@ const OptionCard = ({
                 </h2>
 
                 <div className="prices-div">
-                    <h3>${purchasePrice} @ PURCHASE</h3>
-                    <h3>${currentPrice} @ CURRENT</h3>
+                    <h3>${purchasePrice.toFixed(2)} @ PURCHASE</h3>
+                    <h3>${currentPrice.toFixed(2)} @ CURRENT</h3>
                 </div>
                 <div className="return-div">
                     <h3>
@@ -56,7 +56,7 @@ const OptionCard = ({
                             }}
                         >
                             {todayReturn > 0 ? " +" : " "}
-                            {todayReturn}%
+                            {todayReturn.toFixed(2)}%
                     </span>
                     </h3>
                     <h3>
@@ -68,7 +68,7 @@ const OptionCard = ({
                             }}
                         >
                             {totalReturn > 0 ? " +" : " "}
-                            {totalReturn}%
+                            {totalReturn.toFixed(2)}%
                     </span>
                     </h3>
                 </div>

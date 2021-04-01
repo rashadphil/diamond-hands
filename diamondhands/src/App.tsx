@@ -14,7 +14,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-const cors_api_url = 'https://limitless-escarpment-41761.herokuapp.com'
+const cors_api_url = 'https://stormy-wave-70057.herokuapp.com/'
 
 function App() {
     const [cards, updateCards] = useState([] as any);
@@ -36,7 +36,7 @@ function App() {
             let underlyingSymbol = card.underlyingSymbol;
             let purchasePrice = card.purchasePrice; //keep purchase price the same
 
-            let updatedCard = await fetch(`${cors_api_url}/https://query2.finance.yahoo.com/v7/finance/options/${underlyingSymbol}`, {
+            let updatedCard = await fetch(`${cors_api_url}https://query2.finance.yahoo.com/v7/finance/options/${underlyingSymbol}`, {
                 method: "GET",
                 headers: new Headers({
                     'Origin': "http://localhost:3000",
@@ -46,11 +46,21 @@ function App() {
                 }),
                 mode: "cors",
             })
-                .then(res => res.json())
+                .then(res => {
+                    return res.json();
+                })
                 .then(response => {
-                    card = jsonToCard(response)
+                    //option has already expired
+                    if (response.optionChain.result.length == 0) {
+                        card.currentPrice = 0.00;
+                        return card;
+                    }
+                    card = jsonToCard(response);
                     card.purchasePrice = purchasePrice;
+                    card.totalReturn = (card.currentPrice - card.purchasePrice) / card.purchasePrice * 100
                     return card;
+                }).catch(error => {
+                    console.log(error);
                 })
             return updatedCard;
         }
@@ -116,7 +126,7 @@ function App() {
         return {
             ticker: jayson.underlyingSymbol,
             strike: strike,
-            purchasePrice: jayson.regularMarketOpen,
+            purchasePrice: jayson.regularMarketPrice,
             currentPrice: jayson.regularMarketPrice,
             todayReturn: jayson.regularMarketChangePercent,
             totalReturn: jayson.regularMarketChangePercent,
@@ -153,8 +163,9 @@ function App() {
 
         let apiStrike = (100000.000 + parseFloat(strike)).toFixed(3).toString().replace(".", "").substring(1); //get yahoo finance symbol strike code
         underlyingSymbol = `${ticker}${y}${m}${d}${type}${apiStrike}`
+        console.log(underlyingSymbol);
 
-        return fetch(`${cors_api_url}/https://query2.finance.yahoo.com/v7/finance/options/${underlyingSymbol}`, {
+        return fetch(`${cors_api_url}https://query2.finance.yahoo.com/v7/finance/options/${underlyingSymbol}`, {
             method: "GET",
             headers: new Headers({
                 'Origin': "http://localhost:3000",
@@ -164,8 +175,14 @@ function App() {
             }),
             mode: "cors",
         })
-            .then(res => res.json())
-            .then(response => addCard(jsonToCard(response)))
+            .then(res => {
+                return res.json()
+            })
+            .then(response => {
+                console.log(response)
+                addCard(jsonToCard(response))
+            })
+            .catch(error => console.log(error))
     }
 
 
